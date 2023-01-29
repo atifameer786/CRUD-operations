@@ -1,41 +1,45 @@
 package com.Interview.assignment.project.controller;
 
+import com.Interview.assignment.project.entity.Employee;
+import com.Interview.assignment.project.repository.EmployeeRepository;
 import com.Interview.assignment.project.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
+
 @RequestMapping("/api")
+@CrossOrigin(origins = "*")
 public class EmpController {
 
     @Autowired
     EmployeeService employeeService;
 
-    @GetMapping("/show")
-    public String show() {
-        return "hello";
-    }
+    @Autowired
+    EmployeeRepository employeeRepository;
+
+    // @GetMapping("/show")
+    // public String show() {
+    // return "hello";
+    // }
 
     @PostMapping("/createuser")
-    public String createEmp(@RequestParam("f_name") String f_name,
-                            @RequestParam("l_name") String l_name,
-                            @RequestParam("mob_num") String mob_num,
-                            @RequestParam("email_id") String email_id,
-                            @RequestParam("job_pos") String job_pos) {
-        return employeeService.createEmployee(f_name, l_name, mob_num, email_id, job_pos);
+    public String createEmpp(@RequestBody(required = false) Employee e) {
+        return employeeService.createEmployee(e.getName(), e.getL_name(), e.getMob_num(), e.getEmail_id(),
+                e.getJob_pos());
 
     }
 
     @PostMapping("/updateemp")
-    public String updateEmp(@RequestParam("emp_id") Long emp_id,
-                            @RequestParam("f_name") String f_name,
-                            @RequestParam("l_name") String l_name,
-                            @RequestParam("mob_num") String mob_num,
-                            @RequestParam("email_id") String email_id,
-                            @RequestParam("job_pos") String job_pos) {
+    public String updateEmp(@RequestParam(value = "emp_id", required = true) Long emp_id,
+            @RequestParam(value = "f_name", required = false) String f_name,
+            @RequestParam(value = "l_name", required = false) String l_name,
+            @RequestParam(value = "mob_num", required = false) String mob_num,
+            @RequestParam(value = "email_id", required = false) String email_id,
+            @RequestParam(value = "job_pos", required = false) String job_pos) {
         return employeeService.updateEmployee(emp_id, f_name, l_name, mob_num, email_id, job_pos);
-
 
     }
 
@@ -45,9 +49,14 @@ public class EmpController {
         return "Employee Deleted";
     }
 
-    @GetMapping("/findall")
-    public String findall(@RequestParam("f_name") String f_name) {
-        return employeeService.findEmployee(f_name);
+    @GetMapping("/findbyid/{id}")
+    public Optional<Employee> findall(@PathVariable Long id) {
+        return employeeService.findEmployee(id);
 
+    }
+
+    @GetMapping("/findalldata")
+    public Iterable<Employee> find() {
+        return employeeRepository.findAll();
     }
 }
