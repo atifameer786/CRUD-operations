@@ -15,7 +15,7 @@ import lombok.*;
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long emp_id;
+    private Long emp_id;
     private String name;
     private String l_name;
     private String mob_num;

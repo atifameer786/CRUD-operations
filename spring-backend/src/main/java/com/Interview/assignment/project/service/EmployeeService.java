@@ -43,6 +43,8 @@ public class EmployeeService {
             emp.get().setL_name(l_name);
         if (mob_num != null)
             emp.get().setMob_num(mob_num);
+        if (email_id != null)
+            emp.get().setMob_num(email_id);
         if (job_pos != null)
             emp.get().setJob_pos(job_pos);
         employeeRepository.save(emp.get());
@@ -65,5 +67,6 @@ public class EmployeeService {
         return employeeRepository.findById(id);
 
     }
+
 
 }
